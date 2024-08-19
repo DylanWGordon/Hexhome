@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://7v81i8eck1rg"]
+
+[ext_resource type="ArrayMesh" uid="uid://jird3o4rk48n" path="res://assets/hexmesh.res" id="1_66q5y"]
+[ext_resource type="Script" path="res://Player.gd" id="2_msaik"]
+[ext_resource type="PackedScene" uid="uid://bu7hmr5fcgx54" path="res://assets/player.dae" id="3_f4g48"]
+[ext_resource type="Script" path="res://DirectionalLight3D.gd" id="4_wl2mu"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_xxv0r"]
+points = PackedVector3Array(50, 0, 0, 25, 0, 43, -25, 0, 43, -50, 0, 0, -25, 0, -43, 25, 0, -43, 50, -2, 0, 25, -2, 43, -25, -2, 43, -50, -2, 0, -25, -2, -43, 25, -2, -43)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qila5"]
+radius = 0.244027
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sm3i6"]
+radius = 0.248446
+height = 0.78026
+
+[node name="Main" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_xxv0r")
+
+[node name="Hexmesh" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(-2.18557e-06, 0, 50, 0, 1, 0, -50, 0, -2.18557e-06, 0, -1, 0)
+mesh = ExtResource("1_66q5y")
+skeleton = NodePath("../..")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("2_msaik")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.967745, 0)
+shape = SubResource("SphereShape3D_qila5")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375825, 0)
+shape = SubResource("CapsuleShape3D_sm3i6")
+
+[node name="Pivot" type="Node3D" parent="Player"]
+
+[node name="Character" parent="Player/Pivot" instance=ExtResource("3_f4g48")]
+
+[node name="PlayerCam" type="Camera3D" parent="Player/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 1, 3.29583)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.775562, 0.631272, 0, -0.631272, 0.775562, 0.0746086, 11.5188, 45.8294)
+shadow_enabled = true
+script = ExtResource("4_wl2mu")
